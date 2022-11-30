@@ -1137,18 +1137,17 @@ You have {4-self.settings.settings_warning} warnings left.
     def commit_metadata(self) -> None:
         if self.metadata is not None and self.comic_archive is not None:
             self.form_to_metadata()
+            success = self.comic_archive.write_metadata(self.metadata, self.save_data_style)
+            self.comic_archive.load_cache([MetaDataStyle.CBI, MetaDataStyle.CIX])
+            QtWidgets.QApplication.restoreOverrideCursor()
 
-                success = self.comic_archive.write_metadata(self.metadata, self.save_data_style)
-                self.comic_archive.load_cache([MetaDataStyle.CBI, MetaDataStyle.CIX])
-                QtWidgets.QApplication.restoreOverrideCursor()
-
-                if not success:
-                    QtWidgets.QMessageBox.warning(self, "Save failed", "The tag save operation seemed to fail!")
-                else:
-                    self.clear_dirty_flag()
-                    self.update_info_box()
-                    self.update_menus()
-                self.fileSelectionList.update_current_row()
+            if not success:
+                QtWidgets.QMessageBox.warning(self, "Save failed", "The tag save operation seemed to fail!")
+            else:
+                self.clear_dirty_flag()
+                self.update_info_box()
+                self.update_menus()
+            self.fileSelectionList.update_current_row()
 
             self.metadata = self.comic_archive.read_metadata(self.load_data_style)
             self.actual_load_current_archive()
