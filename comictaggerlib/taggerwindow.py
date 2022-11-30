@@ -1136,17 +1136,7 @@ You have {4-self.settings.settings_warning} warnings left.
 
     def commit_metadata(self) -> None:
         if self.metadata is not None and self.comic_archive is not None:
-            reply = QtWidgets.QMessageBox.question(
-                self,
-                "Save Tags",
-                f"Are you sure you wish to save {MetaDataStyle.name[self.save_data_style]} tags to this archive?",
-                QtWidgets.QMessageBox.StandardButton.Yes,
-                QtWidgets.QMessageBox.StandardButton.No,
-            )
-
-            if reply == QtWidgets.QMessageBox.StandardButton.Yes:
-                QtWidgets.QApplication.setOverrideCursor(QtGui.QCursor(QtCore.Qt.CursorShape.WaitCursor))
-                self.form_to_metadata()
+            self.form_to_metadata()
 
                 success = self.comic_archive.write_metadata(self.metadata, self.save_data_style)
                 self.comic_archive.load_cache([MetaDataStyle.CBI, MetaDataStyle.CIX])
